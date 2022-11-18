@@ -14,13 +14,13 @@ from system/io import stdin
 
 
 
-proc r(sampleSize: int = 3): seq[string] =
+proc r(population: File, sampleSize: int = 3): seq[string] =
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
   let now1 = getTime()
   var rng = initRand(now1.nanosecond)
 
   # [enumerate lines in stdin](https://stackoverflow.com/a/65146313)
-  for sIndex, sample in enumerate(lines(stdin)):
+  for sIndex, sample in enumerate(lines(population)):
     if sIndex < sampleSize:
       result.add(sample)
     else:
@@ -30,13 +30,13 @@ proc r(sampleSize: int = 3): seq[string] =
 
 
 
-proc l(sampleSize: int = 3): seq[string] =
+proc l(population: File, sampleSize: int = 3): seq[string] =
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
   let now1 = getTime()
   var rng = initRand(now1.nanosecond)
 
   var h = initHeapQueue[(float, string)]()
-  for sample in lines(stdin):
+  for sample in lines(population):
     let r: float = rng.rand(1.0)
     if h.len < sampleSize:
       h.push((r, sample))
@@ -54,8 +54,27 @@ proc l(sampleSize: int = 3): seq[string] =
 
 
 
+iterator li(population: File, sampleSize: int = 3): string =
+  ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
+  let now1 = getTime()
+  var rng = initRand(now1.nanosecond)
+
+  var h = initHeapQueue[(float, string)]()
+  for sample in lines(population):
+    let r: float = rng.rand(1.0)
+    if h.len < sampleSize:
+      h.push((r, sample))
+    else:
+      if r > h[0][0]:
+        discard h.pop()
+        h.push((r, sample))
+
+  for i in 0 ..< len(h): yield h[i][1]
+
+
+
 when isMainModule:
   #let samples = r(3)
-  let samples = l(3)
-  for sample in samples:
+  #let samples = l(3)
+  for sample in li(stdin, 3):
     echo sample
