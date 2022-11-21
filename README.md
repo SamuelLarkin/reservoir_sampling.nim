@@ -21,3 +21,7 @@ nimble build
 * [Nim by Example](https://nim-by-example.github.io/for_iterators)
 * [Nim Introduction](https://narimiran.github.io/nim-basics)
 * [Nim w3cub](https://docs.w3cub.com/nim)
+
+
+## Libraries
+* [nim - itertools](https://narimiran.github.io/itertools/)
