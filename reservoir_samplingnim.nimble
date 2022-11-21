@@ -11,3 +11,4 @@ bin           = @["reservoir_samplingnim"]
 # Dependencies
 
 requires "nim >= 1.6.8"
+requires "cligen"

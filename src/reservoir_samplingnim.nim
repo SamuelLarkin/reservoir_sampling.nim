@@ -93,8 +93,12 @@ proc l_optimal(population: File, sampleSize: int = 3): seq[string] =
 
 
 
-when isMainModule:
-  #let samples = r(3)
-  #let samples = l(3)
-  for sample in li(stdin, 3):
+proc cli(sampleSize: int=3): void =
+  # Test
+  for sample in l_optimal(stdin, sampleSize):
     echo sample
+
+
+
+when isMainModule:
+  import cligen; dispatch cli
