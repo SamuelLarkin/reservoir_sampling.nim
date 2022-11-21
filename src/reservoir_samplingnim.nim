@@ -6,6 +6,7 @@
 import std/enumerate
 import std/heapqueue
 #import std/json
+import std/math
 import std/random
 import std/sugar
 
@@ -70,6 +71,26 @@ iterator li(population: File, sampleSize: int = 3): string =
         h.push((r, sample))
 
   for i in 0 ..< len(h): yield h[i][1]
+
+
+
+proc l_optimal(population: File, sampleSize: int = 3): seq[string] =
+  ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
+  let now1 = getTime()
+  var rng = initRand(now1.nanosecond)
+
+  for i in 0 ..< sample_size:
+    result.add(population.readline())
+
+  var W: float = exp(ln(rng.rand(1.0)) / float(sampleSize))
+  var nextItemIndex = sampleSize + int(floor(ln(rng.rand(1.0)) / ln(1.0-W))) + 1
+
+  for i, sample in enumerate(population.lines()):
+    if i == nextItemIndex:
+      let k = rng.rand(sample_size-1)
+      result[k] = sample
+      W = W * exp(ln(rng.rand(1.0)) / float(sampleSize))
+      next_item_index += int(floor(ln(rng.rand(1.0)) / ln(1-W))) + 1
 
 
 
