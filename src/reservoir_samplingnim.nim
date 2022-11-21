@@ -93,12 +93,27 @@ proc l_optimal(population: File, sampleSize: int = 3): seq[string] =
 
 
 
-proc cli(sampleSize: int=3): void =
+type Algo = enum algo_r, algo_l, algo_lo
+
+proc cli(sampleSize: int=3, algo: Algo=algo_lo): void =
   # Test
-  for sample in l_optimal(stdin, sampleSize):
+  var sampler = r
+  case algo:
+    of algo_r:
+      sampler = r
+    of algo_l:
+      sampler = l
+    of algo_lo:
+      sampler = l_optimal
+
+  for sample in sampler(stdin, sampleSize):
     echo sample
 
 
 
 when isMainModule:
-  import cligen; dispatch cli
+  import cligen
+  dispatch cli, help={
+    "sampleSize": "Sample size",
+    "algo": "Algorithm implementation type",
+    }
