@@ -4,13 +4,22 @@ An excuse to try out `nim`.
 
 ## Compile
 First install the dependencies.
-```bash
+```sh
 nimble install cligen
 ```
 
 Then, from now on, you can do the following to compile:
-```bash
+```sh
 nimble build
+```
+
+If you want to run the code with `nimble`.
+```sh
+nimble run -- --sampleSize=10000 < corpus |& less
+```
+or
+```sh
+reservoir_samplingnim --sampleSize=10000 < corpus |& less
 ```
 
 
