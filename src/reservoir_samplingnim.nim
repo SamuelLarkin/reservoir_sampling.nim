@@ -14,10 +14,9 @@ from system/io import stdin
 
 
 
-proc r(population: File, sampleSize: int = 3): seq[string] =
+proc r(population: File, sampleSize: int = 3, seed: int64 = 42): seq[string] =
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
-  let now1 = getTime()
-  var rng = initRand(now1.nanosecond)
+  var rng = initRand(seed)
 
   # [enumerate lines in stdin](https://stackoverflow.com/a/65146313)
   for sIndex, sample in enumerate(lines(population)):
@@ -30,10 +29,9 @@ proc r(population: File, sampleSize: int = 3): seq[string] =
 
 
 
-proc l(population: File, sampleSize: int = 3): seq[string] =
+proc l(population: File, sampleSize: int = 3, seed: int64 = 42): seq[string] =
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
-  let now1 = getTime()
-  var rng = initRand(now1.nanosecond)
+  var rng = initRand(seed)
 
   var h = initHeapQueue[(float, string)]()
   for sample in lines(population):
@@ -47,17 +45,16 @@ proc l(population: File, sampleSize: int = 3): seq[string] =
 
   #let variable: seq[string] = collect(newSeq):
   #  for p, sample in h.data: sample
-  let variable: seq[string] = collect(newSeq):
+  let sample: seq[string] = collect(newSeq):
     for i in 0 ..< len(h): h[i][1]
 
-  return variable
+  return sample
 
 
 
-iterator li(population: File, sampleSize: int = 3): string =
+iterator li(population: File, sampleSize: int = 3, seed: int64 = 42): string =
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
-  let now1 = getTime()
-  var rng = initRand(now1.nanosecond)
+  var rng = initRand(seed)
 
   var h = initHeapQueue[(float, string)]()
   for sample in lines(population):
@@ -73,10 +70,9 @@ iterator li(population: File, sampleSize: int = 3): string =
 
 
 
-proc l_optimal(population: File, sampleSize: int = 3): seq[string] =
+proc l_optimal(population: File, sampleSize: int = 3, seed: int64 = 42): seq[string] =
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
-  let now1 = getTime()
-  var rng = initRand(now1.nanosecond)
+  var rng = initRand(seed)
 
   for i in 0 ..< sample_size:
     result.add(population.readline())
@@ -95,8 +91,9 @@ proc l_optimal(population: File, sampleSize: int = 3): seq[string] =
 
 type Algo = enum algo_r, algo_l, algo_lo
 
-proc cli(sampleSize: int=3, algo: Algo=algo_lo): void =
+proc cli(sampleSize: int=3, algo: Algo=algo_lo, seed: int64 = getTime().nanosecond): void =
   # Test
+  stderr.writeLine("Seed for reservoir sampling: ", seed)
   var sampler = r
   case algo:
     of algo_r:
@@ -106,7 +103,7 @@ proc cli(sampleSize: int=3, algo: Algo=algo_lo): void =
     of algo_lo:
       sampler = l_optimal
 
-  for sample in sampler(stdin, sampleSize):
+  for sample in sampler(stdin, sampleSize, seed):
     echo sample
 
 
