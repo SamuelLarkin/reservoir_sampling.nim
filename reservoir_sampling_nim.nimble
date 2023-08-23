@@ -5,7 +5,7 @@ author        = "Samuel Larkin"
 description   = "Reservoir sampling algorithm."
 license       = "MIT"
 srcDir        = "src"
-bin           = @["reservoir_samplingnim"]
+bin           = @["reservoir_sampling_nim"]
 
 
 # Dependencies
