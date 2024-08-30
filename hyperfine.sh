@@ -8,6 +8,6 @@ hyperfine \
    --prepare "zcat --force $corpus" \
    --export-json hyperfine.text.json \
    --style full \
-   "./reservoir_samplingnim --algo algo_r < $corpus" \
-   "./reservoir_samplingnim --algo algo_l < $corpus" \
-   "./reservoir_samplingnim --algo algo_lo < $corpus"
+   "./reservoir_sampling_nim --algo algo_r < $corpus" \
+   "./reservoir_sampling_nim --algo algo_l < $corpus" \
+   "./reservoir_sampling_nim --algo algo_lo < $corpus"
