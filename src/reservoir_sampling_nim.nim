@@ -74,6 +74,7 @@ proc l_optimal(population: File, sampleSize: int = 3, seed: int64 = 42): seq[str
   ## Reservoir Sampling Algorithm r](https://en.wikipedia.org/wiki/Reservoir_sampling)
   var rng = initRand(seed)
 
+  # TODO: Fix if sample_size > population
   for i in 0 ..< sample_size:
     result.add(population.readline())
 
